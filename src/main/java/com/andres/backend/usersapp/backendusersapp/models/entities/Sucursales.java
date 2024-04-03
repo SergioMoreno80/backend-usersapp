@@ -1,9 +1,13 @@
 package com.andres.backend.usersapp.backendusersapp.models.entities;
 
+import java.util.Set;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -29,6 +33,10 @@ public class Sucursales {
 		private String telefono;
 	    @NotNull
 		private Long encargado_id;
+
+
+	    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="sucursales")
+	    private Set<Movimientos_inventario> movimientos;
 
 		public Long getId() {
 			return id;
@@ -78,5 +86,21 @@ public class Sucursales {
 		public void setEncargado_id(Long encargado_id) {
 			this.encargado_id = encargado_id;
 		}
+		@Override
+		public String toString() {
+			return "{id=" + id + ", nombre=" + nombre + ", direccion=" + direccion + ", ciudad=" + ciudad
+					+ ", codigo_postal=" + codigo_postal + ", pais=" + pais + ", telefono=" + telefono
+					+ ", encargado_id=" + encargado_id + ", movimientos=" + movimientos + "}";
+		}
+		
+		
+//		public Set<Movimientos_inventario> getMovimientos() {
+//			return movimientos;
+//		}
+//		public void setMovimientos(Set<Movimientos_inventario> movimientos) {
+//			this.movimientos = movimientos;
+//		}
+
+
 
 }

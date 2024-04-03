@@ -1,9 +1,13 @@
 package com.andres.backend.usersapp.backendusersapp.models.entities;
 
+import java.util.Set;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
@@ -19,6 +23,10 @@ public class Departamentos {
     private String descripcion;
 
     private Long supervisor_id;
+    
+    
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="departamentos")
+    private Set<Movimientos_inventario> movimientos;
 
 	public Long getId() {
 		return id;

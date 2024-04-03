@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -24,26 +26,31 @@ public class Movimientos_inventario {
 	    @NotBlank
 	    private String descripcion;
 
-	    @NotNull
-	    private Long id_sucursal;
+//	    @NotNull
+//	    private Long id_sucursal;
 
 //	    @ManyToOne(fetch = FetchType.LAZY)
 //	    @JoinColumn(name = "id_sucursal", referencedColumnName = "id")
 //	    private Sucursales sucursales;
 
-	    @NotNull
-	    private Long id_departamento;
+	    //Prueba para relacion de datos con Sucursales
+	    @ManyToOne
+	    @JoinColumn(name = "id_sucursal")
+	    private Sucursales sucursales;
 
-//	    @ManyToOne(fetch = FetchType.LAZY)
-//	    @JoinColumn(name = "id_departamento", referencedColumnName = "id")
-//	    private Departamentos departamentos;
+//	    @NotNull
+//	    private Long id_departamento;
 
-	    @NotNull
-	    private Long empleado_id;
+	    @ManyToOne
+	    @JoinColumn(name = "id_departamento", referencedColumnName = "id")
+	    private Departamentos departamentos;
 
-//	    @ManyToOne(fetch = FetchType.LAZY)
-//	    @JoinColumn(name = "empleado_id", referencedColumnName = "empleado_id")
-//	    private Empleado empleado;
+//	    @NotNull
+//	    private Long empleado_id;
+
+	    @ManyToOne
+	    @JoinColumn(name = "empleado_id")
+	    private Empleado empleado;
 
 	    private Long user_id;
 //	    @ManyToOne(fetch = FetchType.LAZY)
@@ -86,29 +93,29 @@ public class Movimientos_inventario {
 			this.descripcion = descripcion;
 		}
 
-		public Long getId_sucursal() {
-			return id_sucursal;
-		}
+//		public Long getId_sucursal() {
+//			return id_sucursal;
+//		}
+//
+//		public void setId_sucursal(Long id_sucursal) {
+//			this.id_sucursal = id_sucursal;
+//		}
 
-		public void setId_sucursal(Long id_sucursal) {
-			this.id_sucursal = id_sucursal;
-		}
+//		public Long getId_departamento() {
+//			return id_departamento;
+//		}
+//
+//		public void setId_departamento(Long id_departamento) {
+//			this.id_departamento = id_departamento;
+//		}
 
-		public Long getId_departamento() {
-			return id_departamento;
-		}
-
-		public void setId_departamento(Long id_departamento) {
-			this.id_departamento = id_departamento;
-		}
-
-		public Long getEmpleado_id() {
-			return empleado_id;
-		}
-
-		public void setEmpleado_id(Long empleado_id) {
-			this.empleado_id = empleado_id;
-		}
+//		public Long getEmpleado_id() {
+//			return empleado_id;
+//		}
+//
+//		public void setEmpleado_id(Long empleado_id) {
+//			this.empleado_id = empleado_id;
+//		}
 
 		public Long getUser_id() {
 			return user_id;
@@ -134,37 +141,29 @@ public class Movimientos_inventario {
 			this.doc = doc;
 		}
 
-//		public Sucursales getSucursales() {
-//			return sucursales;
-//		}
-//
-//		public void setSucursales(Sucursales sucursales) {
-//			this.sucursales = sucursales;
-//		}
-//
-//		public Departamentos getDepartamentos() {
-//			return departamentos;
-//		}
-//
-//		public void setDepartamentos(Departamentos departamentos) {
-//			this.departamentos = departamentos;
-//		}
-//
-//		public Empleado getEmpleado() {
-//			return empleado;
-//		}
-//
-//		public void setEmpleado(Empleado empleado) {
-//			this.empleado = empleado;
-//		}
-//
-//		public User getUser() {
-//			return user;
-//		}
-//
-//		public void setUser(User user) {
-//			this.user = user;
-//		}
+		public Sucursales getSucursales() {
+			return sucursales;
+		}
+
+		public void setSucursales(Sucursales sucursales) {
+			this.sucursales = sucursales;
+		}
+
+		public Departamentos getDepartamentos() {
+			return departamentos;
+		}
+
+		public void setDepartamentos(Departamentos departamentos) {
+			this.departamentos = departamentos;
+		}
+
+		public Empleado getEmpleado() {
+			return empleado;
+		}
+
+		public void setEmpleado(Empleado empleado) {
+			this.empleado = empleado;
+		}
 
 
 

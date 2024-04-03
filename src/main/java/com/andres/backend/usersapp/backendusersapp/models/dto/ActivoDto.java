@@ -50,6 +50,7 @@ public class ActivoDto {
 		this.estatus = estatus;
 		this.clave_busqueda = clave_busqueda;
 		this.imagen = imagen;
+		this.foto = foto;
 	}
 
 	public Long getActivo_id() {

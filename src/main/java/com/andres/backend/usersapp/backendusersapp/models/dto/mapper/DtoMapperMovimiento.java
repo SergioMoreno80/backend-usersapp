@@ -27,8 +27,8 @@ public class DtoMapperMovimiento {
 		// boolean isAdmin = user.getRoles().stream().anyMatch(r ->
 		// "ROLE_ADMIN".equals(r.getName()));
 		return new Movimientos_inventarioDto(movimiento.getId(), movimiento.getTipo_movimiento(),
-				movimiento.getFecha_movimiento(), movimiento.getDescripcion(), movimiento.getId_sucursal(),
-				movimiento.getId_departamento(), movimiento.getEmpleado_id(), movimiento.getUser_id(),
+				movimiento.getFecha_movimiento(), movimiento.getDescripcion(), movimiento.getSucursales().getNombre(),
+				movimiento.getDepartamentos().getNombre(), movimiento.getEmpleado().getNombre(), movimiento.getUser_id(),
 				movimiento.getDocumento());
 	}
 

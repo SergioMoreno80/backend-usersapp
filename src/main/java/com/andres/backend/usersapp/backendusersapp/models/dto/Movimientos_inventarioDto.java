@@ -4,6 +4,8 @@ import java.util.Date;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.andres.backend.usersapp.backendusersapp.models.entities.Sucursales;
+
 
 public class Movimientos_inventarioDto {
 
@@ -11,20 +13,26 @@ public class Movimientos_inventarioDto {
 	    private String tipo_movimiento;
 	    private Date fecha_movimiento;
 	    private String descripcion;
-	    private Long id_sucursal;
+	   // private Long id_sucursal;
 //	    private Sucursales sucursales; // Cambiado de Long a Sucursales
+	    private String id_sucursal; // Nombre de la sucursal en lugar de la entidad completa
+
 //	    private Departamentos departamentos;
 //	    private Empleado empleado;
 //	    private User user;
-	    private Long id_departamento;
-	    private Long empleado_id;
+	    private String id_departamento;
+	    private String empleado_id;
 	    private Long user_id;
 	    private MultipartFile doc; // Columna para almacenar la imagen en formato de bytes
 	    private String documento;
 
 		public Movimientos_inventarioDto(Long id, String tipo_movimiento, Date fecha_movimiento, String descripcion,
-				Long id_sucursal, Long id_departamento, Long empleado_id, Long user_id,
-//				Sucursales sucursales, Departamentos departamentos, Empleado empleado, User user,
+//				Sucursales sucursales, 
+				String id_sucursal, String id_departamento,
+				String empleado_id, Long user_id,
+				//Long id_sucursal,
+				
+//				Departamentos departamentos, Empleado empleado, User user,
 //				MultipartFile doc,
 				String documento) {
 			super();
@@ -32,16 +40,16 @@ public class Movimientos_inventarioDto {
 			this.tipo_movimiento = tipo_movimiento;
 			this.fecha_movimiento = fecha_movimiento;
 			this.descripcion = descripcion;
-//	        this.sucursales = sucursales;
+	        this.id_sucursal = id_sucursal;
 //	        this.departamentos = departamentos;
 //	        this.empleado = empleado;
 //	        this.user = user;
-			this.id_sucursal = id_sucursal;
+//			this.id_sucursal = id_sucursal;
 
 			this.id_departamento = id_departamento;
 			this.empleado_id = empleado_id;
 			this.user_id = user_id;
-			this.doc = doc;
+//			this.doc = doc;
 			this.documento = documento;
 		}
 
@@ -86,29 +94,29 @@ public class Movimientos_inventarioDto {
 			this.descripcion = descripcion;
 		}
 
-		public Long getId_sucursal() {
-			return id_sucursal;
-		}
+//		public Long getId_sucursal() {
+//			return id_sucursal;
+//		}
+//
+//		public void setId_sucursal(Long id_sucursal) {
+//			this.id_sucursal = id_sucursal;
+//		}
 
-		public void setId_sucursal(Long id_sucursal) {
-			this.id_sucursal = id_sucursal;
-		}
+//		public Long getId_departamento() {
+//			return id_departamento;
+//		}
+//
+//		public void setId_departamento(Long id_departamento) {
+//			this.id_departamento = id_departamento;
+//		}
 
-		public Long getId_departamento() {
-			return id_departamento;
-		}
-
-		public void setId_departamento(Long id_departamento) {
-			this.id_departamento = id_departamento;
-		}
-
-		public Long getEmpleado_id() {
-			return empleado_id;
-		}
-
-		public void setEmpleado_id(Long empleado_id) {
-			this.empleado_id = empleado_id;
-		}
+//		public Long getEmpleado_id() {
+//			return empleado_id;
+//		}
+//
+//		public void setEmpleado_id(Long empleado_id) {
+//			this.empleado_id = empleado_id;
+//		}
 
 		public Long getUser_id() {
 			return user_id;
@@ -124,6 +132,36 @@ public class Movimientos_inventarioDto {
 
 		public void setDocumento(String documento) {
 			this.documento = documento;
+		}
+
+
+		public String getId_sucursal() {
+			return id_sucursal;
+		}
+
+
+		public void setId_sucursal(String id_sucursal) {
+			this.id_sucursal = id_sucursal;
+		}
+
+
+		public String getId_departamento() {
+			return id_departamento;
+		}
+
+
+		public void setId_departamento(String id_departamento) {
+			this.id_departamento = id_departamento;
+		}
+
+
+		public String getEmpleado_id() {
+			return empleado_id;
+		}
+
+
+		public void setEmpleado_id(String empleado_id) {
+			this.empleado_id = empleado_id;
 		}
 
 //		public Sucursales getSucursales() {

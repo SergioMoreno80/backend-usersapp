@@ -42,10 +42,12 @@ public class SpringSecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests()
+                .requestMatchers(HttpMethod.GET, "/imagenes/**").permitAll() // Permitir acceso a las imágenes estáticas
         	    .requestMatchers(HttpMethod.GET, "/users", "/users/page/{page}").permitAll()
         	    .requestMatchers(HttpMethod.GET, "/activos", "/activos/page/{page}").permitAll()
-        	    .requestMatchers(HttpMethod.GET, "/users/**", "/activos/**").permitAll()
-        	    .requestMatchers(HttpMethod.POST, "/activos","/users").permitAll()
+        	    .requestMatchers(HttpMethod.GET, "/movimientos", "/movimientos/page/{page}").permitAll()
+        	    .requestMatchers(HttpMethod.GET, "/users/**", "/activos/**", "/movimientos/**", "/sucursales/**").permitAll()
+        	    .requestMatchers(HttpMethod.POST, "/activos","/users","/movimientos").permitAll()
 
 //                .requestMatchers(HttpMethod.GET, "/users", "/users/page/{page}").permitAll()
 ////                .requestMatchers(HttpMethod.GET, "/activos", "/users/page/{page}").permitAll()

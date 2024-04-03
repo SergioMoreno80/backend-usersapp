@@ -13,27 +13,29 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.andres.backend.usersapp.backendusersapp.models.dto.ActivoDto;
-import com.andres.backend.usersapp.backendusersapp.models.dto.MovimientoResponseDto;
 import com.andres.backend.usersapp.backendusersapp.models.dto.Movimientos_inventarioDto;
-import com.andres.backend.usersapp.backendusersapp.models.dto.mapper.DtoMapperActivo;
 import com.andres.backend.usersapp.backendusersapp.models.dto.mapper.DtoMapperMovimiento;
-import com.andres.backend.usersapp.backendusersapp.models.entities.Activo;
+import com.andres.backend.usersapp.backendusersapp.models.entities.Departamentos;
+import com.andres.backend.usersapp.backendusersapp.models.entities.Empleado;
 import com.andres.backend.usersapp.backendusersapp.models.entities.Movimientos_inventario;
+import com.andres.backend.usersapp.backendusersapp.models.entities.Sucursales;
+import com.andres.backend.usersapp.backendusersapp.repositories.DepartamentosRepository;
+import com.andres.backend.usersapp.backendusersapp.repositories.EmpleadoRepository;
 import com.andres.backend.usersapp.backendusersapp.repositories.MovimientoRepository;
+import com.andres.backend.usersapp.backendusersapp.repositories.SucursalesRepository;
 
 @Service
 public class MovimientoServiceImp implements MovimientoService {
 
 	@Autowired
 	private MovimientoRepository repository;
-//	@Autowired
-//	private SucursalesRepository sucursalRepository;
-//	@Autowired
-//	private DepartamentosRepository departamentoRepository;
+	@Autowired
+	private SucursalesRepository sucursalRepository;
+	@Autowired
+	private DepartamentosRepository departamentoRepository;
 //
-//	@Autowired
-//	private EmpleadoRepository empleadoRepository;
+	@Autowired
+	private EmpleadoRepository empleadoRepository;
 //	@Autowired
 //	private UserRepository userRepository;
 
@@ -56,6 +58,11 @@ public class MovimientoServiceImp implements MovimientoService {
 	}
 
 	@Override
+	public Page<Movimientos_inventarioDto> obtenerMovimientos(Pageable pageable) {
+		return repository.findAll(pageable).map(u -> DtoMapperMovimiento.builder().setMovimiento(u).build());
+	}
+
+	@Override
 	@Transactional(readOnly = true)
 	public Optional<Movimientos_inventarioDto> findById(Long id) {
 		return repository.findById(id).map(u -> DtoMapperMovimiento.builder().setMovimiento(u).build());
@@ -67,12 +74,20 @@ public class MovimientoServiceImp implements MovimientoService {
 	public Movimientos_inventarioDto save(Movimientos_inventarioDto movimiento) {
 
 		Movimientos_inventario MovDb = new Movimientos_inventario();
+		Optional<Empleado> optionalEmpleado = empleadoRepository.findById(Long.valueOf(movimiento.getEmpleado_id()));
+		Optional<Sucursales> optionalSucursal = sucursalRepository.findById(Long.valueOf(optionalEmpleado.get().getSucursal_id()));
+		Optional<Departamentos> optionalDepartamento = departamentoRepository.findById(Long.valueOf(optionalEmpleado.get().getDepartamento_id()));
+
 		MovDb.setDescripcion(movimiento.getDescripcion());
 		MovDb.setTipo_movimiento(movimiento.getTipo_movimiento());
 		MovDb.setFecha_movimiento(movimiento.getFecha_movimiento());
-		MovDb.setEmpleado_id(movimiento.getEmpleado_id());
-		MovDb.setId_departamento(movimiento.getId_departamento());
-		MovDb.setId_sucursal(movimiento.getId_sucursal());
+		MovDb.setSucursales(optionalSucursal.get());
+		MovDb.setDepartamentos(optionalDepartamento.get());
+		MovDb.setEmpleado(optionalEmpleado.get());
+
+//		MovDb.setEmpleado_id(movimiento.getEmpleado_id());
+//		MovDb.setId_departamento(movimiento.getId_departamento());
+		//MovDb.setId_sucursal(movimiento.getId_sucursal());
 		MovDb.setUser_id(movimiento.getUser_id());
 		if (movimiento.getDoc() != null) {
 			String directorio = "/Users/sergiomoreno/Documents/docs_movimientos/";
@@ -113,9 +128,9 @@ public class MovimientoServiceImp implements MovimientoService {
 			MovDb.setFecha_movimiento(movimiento.getFecha_movimiento());
 			MovDb.setTipo_movimiento(movimiento.getTipo_movimiento());
 			MovDb.setUser_id(movimiento.getUser_id());
-			MovDb.setEmpleado_id(movimiento.getEmpleado_id());
-			MovDb.setId_departamento(movimiento.getId_departamento());
-			MovDb.setId_sucursal(movimiento.getId_sucursal());
+//			MovDb.setEmpleado_id(movimiento.getEmpleado_id());
+//			MovDb.setId_departamento(movimiento.getId_departamento());
+			//MovDb.setId_sucursal(movimiento.getId_sucursal());
 
 			movOptional = repository.save(MovDb);
 		}
@@ -127,11 +142,7 @@ public class MovimientoServiceImp implements MovimientoService {
 		repository.deleteById(id);
 	}
 
-//	@Override
-//	public Page<Movimientos_inventarioDto> obtenerMovimientos(Pageable pageable) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+
 
 //	public List<Object[]> findAllMovimientosDetallesAndNames(Long movimientoId) {
 //        return repository.findAllMovimientosDetallesAndNames(movimientoId);

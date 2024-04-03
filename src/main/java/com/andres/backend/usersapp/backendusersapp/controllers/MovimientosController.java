@@ -47,8 +47,13 @@ public class MovimientosController {
 	@Autowired
 	private DepartamentosService departamentosService;
 
+	
+    @GetMapping
+    public List<Movimientos_inventarioDto> list() {
+        return service.findAll();
+    }
 
-	 @GetMapping("/page/{page}")
+	   @GetMapping("/page/{page}")
 	   public Page<Movimientos_inventarioDto> list(@PathVariable Integer page) {
 	       Pageable pageable = PageRequest.of(page, 5);
 	       return service.findAll(pageable);

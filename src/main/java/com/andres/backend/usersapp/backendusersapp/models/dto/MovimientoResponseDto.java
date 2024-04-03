@@ -14,7 +14,7 @@ public class MovimientoResponseDto {
 //	    private String nombreDepartamento;
 //	    private String nombreEmpleado;
 //	    private String nombreUsuario;
-//	    private String documento;    
+//	    private String documento;
 	    private String tipo_movimiento;
 	    private Date fecha_movimiento;
 	    private String descripcion;
@@ -34,7 +34,7 @@ public class MovimientoResponseDto {
 //	        this.nombreDepartamento = nombreDepartamento;
 //	        this.nombreEmpleado = nombreEmpleado;
 //	    }
-	    
+
 	 // Constructor
 	    public MovimientoResponseDto(String tipoMovimiento, Date fechaMovimiento, String descripcion,
 	                                 String documento, String nombreProveedor, String nombreSucursal,
@@ -49,7 +49,7 @@ public class MovimientoResponseDto {
 	        this.nombreDepartamento = nombreDepartamento;
 	    }
 
-		
+
 
 }
 
