@@ -31,12 +31,13 @@ public class DtoMapperActivo {
         		activo.getNo_serie(),
         		activo.getTipo(),
         		activo.getGrupoactivo_id(),
-        		activo.getProveedor_id(),
+        		activo.getProveedor().getProveedor_id(),
         		activo.getFactura(),
         		activo.getFecha_compra(),activo.getImporte(),
         		activo.getFecha_ingreso(), activo.getEstatus(),
         		activo.getClave_busqueda(),
-        		null, activo.getFoto()
+        		null, activo.getFoto(), activo.getProveedor().getNombre()
+        		,activo.getDocumento()
 
         		);
 

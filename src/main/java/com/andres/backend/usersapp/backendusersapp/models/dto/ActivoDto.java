@@ -27,12 +27,16 @@ public class ActivoDto {
     private String clave_busqueda;
     private MultipartFile imagen; // Columna para almacenar la imagen en formato de bytes
     private String foto;
+    private MultipartFile doc; // Columna para almacenar la imagen en formato de bytes
+    private String documento;
+    private String Proveedor;
+
 
 
 	public ActivoDto(Long activo_id, String nombre, String descripcion, Long fabricante_id, String modelo,
 			String no_serie, String tipo, Long grupoactivo_id, Long proveedor_id, String factura,
 			Date fecha_compra, BigDecimal importe, Date fecha_ingreso, String estatus, String clave_busqueda,
-			MultipartFile imagen, String foto) {
+			MultipartFile imagen, String foto, String nombreProveedor, String documento) {
 		super();
 		this.activo_id = activo_id;
 		this.nombre = nombre;
@@ -51,6 +55,9 @@ public class ActivoDto {
 		this.clave_busqueda = clave_busqueda;
 		this.imagen = imagen;
 		this.foto = foto;
+		this.documento = documento;
+
+		this.Proveedor = nombreProveedor;
 	}
 
 	public Long getActivo_id() {
@@ -167,6 +174,31 @@ public class ActivoDto {
 
 	public void setFoto(String foto) {
 		this.foto = foto;
+	}
+
+	
+	public MultipartFile getDoc() {
+		return doc;
+	}
+
+	public void setDoc(MultipartFile doc) {
+		this.doc = doc;
+	}
+
+	public String getDocumento() {
+		return documento;
+	}
+
+	public void setDocumento(String documento) {
+		this.documento = documento;
+	}
+
+	public String getProveedor() {
+		return Proveedor;
+	}
+
+	public void setProveedor(String proveedor) {
+		Proveedor = proveedor;
 	}
 
 

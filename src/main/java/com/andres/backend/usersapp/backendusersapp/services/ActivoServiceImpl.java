@@ -17,7 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.andres.backend.usersapp.backendusersapp.models.dto.ActivoDto;
 import com.andres.backend.usersapp.backendusersapp.models.dto.mapper.DtoMapperActivo;
 import com.andres.backend.usersapp.backendusersapp.models.entities.Activo;
+import com.andres.backend.usersapp.backendusersapp.models.entities.Empleado;
+import com.andres.backend.usersapp.backendusersapp.models.entities.Proveedor;
 import com.andres.backend.usersapp.backendusersapp.repositories.ActivoRepository;
+import com.andres.backend.usersapp.backendusersapp.repositories.ProveedorRepository;
 
 import io.jsonwebtoken.io.IOException;
 
@@ -26,7 +29,8 @@ public class ActivoServiceImpl implements ActivoService {
 
 	@Autowired
 	private ActivoRepository repository;
-
+	@Autowired
+	private ProveedorRepository proveedorRepository;
 	@Override
 	@Transactional(readOnly = true)
 	public List<ActivoDto> findAll() {
@@ -61,6 +65,7 @@ public class ActivoServiceImpl implements ActivoService {
 	@Transactional
 	public ActivoDto save(ActivoDto activo) {
         Activo activoDb = new Activo();
+		Optional<Proveedor> optionalProveedor = proveedorRepository.findById(activo.getProveedor_id());
 
         activoDb.setClave_busqueda(activo.getClave_busqueda());
 		activoDb.setDescripcion(activo.getDescripcion());
@@ -74,11 +79,13 @@ public class ActivoServiceImpl implements ActivoService {
 		activoDb.setModelo(activo.getModelo());
 		activoDb.setNo_serie(activo.getModelo());
 		activoDb.setNombre(activo.getNombre());
-		activoDb.setProveedor_id(activo.getProveedor_id());
+		activoDb.setProveedor(optionalProveedor.get());
 		activoDb.setTipo(activo.getTipo());
 		activoDb.setImagen(null);
 
 		String directorioImagenes = "/Users/sergiomoreno/Documents/imagenes_activos/";
+		String directorioDocs = "/Users/sergiomoreno/Documents/doc_activos/";
+
 
         // Verifica si el directorio existe, si no, créalo
         Path pathDirectorio = Paths.get(directorioImagenes);
@@ -90,16 +97,30 @@ public class ActivoServiceImpl implements ActivoService {
 				e.printStackTrace();
 			}
         }
+        Path pathDirectorioDoc = Paths.get(directorioDocs);
+        if (!Files.exists(pathDirectorioDoc)) {
+            try {
+				Files.createDirectories(pathDirectorioDoc);
+			} catch (java.io.IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
 
         // Guardar la imagen en el directorio de imágenes
         Path rutaImagen = Paths.get(directorioImagenes + activo.getImagen().getOriginalFilename());
+        Path rutaDoc = Paths.get(directorioDocs + activo.getDoc().getOriginalFilename());
+
         try {
 			Files.write(rutaImagen, activo.getImagen().getBytes());
+			Files.write(rutaDoc, activo.getDoc().getBytes());
+
 		} catch (java.io.IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         activoDb.setFoto(activo.getImagen().getOriginalFilename());
+        activoDb.setDocumento(activo.getDoc().getOriginalFilename());
 
 
 		return DtoMapperActivo.builder().setActivo(repository.save(activoDb)).build();
@@ -113,6 +134,7 @@ public class ActivoServiceImpl implements ActivoService {
 		// Activo activo = new Activo();
 		try {
 
+			Optional<Proveedor> optionalProveedor = proveedorRepository.findById(activo.getProveedor().getProveedor_id());
 
 			byte[] imagenBytes = imagen.getBytes();
 
@@ -128,7 +150,7 @@ public class ActivoServiceImpl implements ActivoService {
 			activo.setModelo(activo.getModelo());
 			activo.setNo_serie(activo.getModelo());
 			activo.setNombre(activo.getNombre());
-			activo.setProveedor_id(activo.getProveedor_id());
+			activo.setProveedor(optionalProveedor.get());
 			activo.setTipo(activo.getTipo());
 			activo.setImagen(imagenBytes);
 
@@ -159,6 +181,8 @@ public class ActivoServiceImpl implements ActivoService {
 		Optional<Activo> o = repository.findById(id);
 		Activo activoOptional = null;
 		if (o.isPresent()) {
+			Optional<Proveedor> optionalProveedor = proveedorRepository.findById(activo.getProveedor_id());
+
 			Activo activoDb = o.orElseThrow();
 			activoDb.setNombre(activo.getNombre());
 			activoDb.setDescripcion(activo.getDescripcion());
@@ -172,7 +196,7 @@ public class ActivoServiceImpl implements ActivoService {
 			activoDb.setImporte(activo.getImporte());
 			activoDb.setModelo(activo.getModelo());
 			activoDb.setNo_serie(activo.getNo_serie());
-			activoDb.setProveedor_id(activo.getProveedor_id());
+			activoDb.setProveedor(optionalProveedor.get());
 			activoDb.setTipo(activo.getTipo());
 			//activoDb.setImagen(null);
 

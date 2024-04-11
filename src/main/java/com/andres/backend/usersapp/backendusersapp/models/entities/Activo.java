@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -54,10 +56,18 @@ public class Activo {
     private byte[] imagen; // Columna para almacenar la imagen en formato de bytes
 
     private String foto;
+    
+    private byte[] doc; // Columna para almacenar la imagen en formato de bytes
+
+    private String documento;
 //	@JsonIgnore
 //    @ManyToOne(fetch= FetchType.LAZY)
 //    @JoinColumn(name = "proveedor_id")  // Nombre de la columna en la tabla de Activos que referencia a Proveedor
-    private Long proveedor_id;
+//    private Long proveedor_id;
+    
+    @ManyToOne
+    @JoinColumn(name = "proveedor_id")
+    private Proveedor proveedor;
 //	@JsonIgnore
 //    @ManyToOne(fetch= FetchType.LAZY)
 //    @JoinColumn(name = "fabricante_id")  // Nombre de la columna en la tabla de Activos que referencia
@@ -145,12 +155,7 @@ public class Activo {
 	public void setImagen(byte[] imagen) {
 		this.imagen = imagen;
 	}
-	public Long getProveedor_id() {
-		return proveedor_id;
-	}
-	public void setProveedor_id(Long proveedor_id) {
-		this.proveedor_id = proveedor_id;
-	}
+
 	public Long getFabricante_id() {
 		return fabricante_id;
 	}
@@ -169,6 +174,27 @@ public class Activo {
 	public void setFoto(String foto) {
 		this.foto = foto;
 	}
+	
+	
+	public byte[] getDoc() {
+		return doc;
+	}
+	public void setDoc(byte[] doc) {
+		this.doc = doc;
+	}
+	public String getDocumento() {
+		return documento;
+	}
+	public void setDocumento(String documento) {
+		this.documento = documento;
+	}
+	public Proveedor getProveedor() {
+		return proveedor;
+	}
+	public void setProveedor(Proveedor proveedor) {
+		this.proveedor = proveedor;
+	}
+
 
 
 
