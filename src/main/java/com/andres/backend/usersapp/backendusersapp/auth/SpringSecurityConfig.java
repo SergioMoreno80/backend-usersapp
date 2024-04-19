@@ -39,46 +39,31 @@ public class SpringSecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
+  
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests()
-                .requestMatchers(HttpMethod.GET, "/imagenes/**").permitAll() // Permitir acceso a las imágenes estáticas
-        	    .requestMatchers(HttpMethod.GET, "/users", "/users/page/{page}").permitAll()
-        	    .requestMatchers(HttpMethod.GET, "/activos", "/activos/page/{page}").permitAll()
-        	    .requestMatchers(HttpMethod.GET, "/movimientos", "/movimientos/page/{page}").permitAll()
-        	    .requestMatchers(HttpMethod.GET, "/users/**", "/activos/**", "/movimientos/**", "/sucursales/**").permitAll()
-        	    .requestMatchers(HttpMethod.POST, "/activos","/users","/movimientos").permitAll()
-
-//                .requestMatchers(HttpMethod.GET, "/users", "/users/page/{page}").permitAll()
-////                .requestMatchers(HttpMethod.GET, "/activos", "/users/page/{page}").permitAll()
-//                .requestMatchers(HttpMethod.GET, "/users/{id}").hasAnyRole("USER", "ADMIN")
-////                .requestMatchers(HttpMethod.GET, "/activos/{id}").hasAnyRole("USER", "ADMIN")
-//                .requestMatchers(HttpMethod.POST, "/users").hasRole("ADMIN")
-//                .requestMatchers("/users/**").hasRole("ADMIN")
-//                .requestMatchers("/activos/**").permitAll()
-
-//                .requestMatchers(HttpMethod.POST, "/activos").hasAnyRole("USER", "ADMIN")
-//                .requestMatchers("/activos/**").hasAnyRole("USER", "ADMIN")
-                // .requestMatchers(HttpMethod.DELETE, "/users/{id}").hasRole("ADMIN")
-                // .requestMatchers(HttpMethod.PUT, "/users/{id}").hasRole("ADMIN")
+ SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .authorizeHttpRequests((authz) -> authz
+            .requestMatchers(HttpMethod.GET, "/imagenes/**","/users", "/users/page/{page}", "/activos", "/activos/page/{page}", "/users/**", "/activos/**")
+            .permitAll()
+       	    .requestMatchers(HttpMethod.POST, "/activos","/users").permitAll()
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                .requestMatchers("/api/user/**").hasRole("USER")
                 .anyRequest().authenticated()
-                .and()
-                .addFilter(new JwtAuthenticationFilter(authenticationConfiguration.getAuthenticationManager()))
-                .addFilter(new JwtValidationFilter(authenticationConfiguration.getAuthenticationManager()))
+            )
+            .addFilter(new JwtAuthenticationFilter(authenticationConfiguration.getAuthenticationManager()))
+            .addFilter(new JwtValidationFilter(authenticationConfiguration.getAuthenticationManager()))
                 .csrf(config -> config.disable())
                 .sessionManagement(managment -> managment.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .build();
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()));
+        return http.build();
     }
+
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
 
         CorsConfiguration config = new CorsConfiguration();
-//        config.setAllowedOrigins(Arrays.asList("*"));
-//        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-//        config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
-//        config.setAllowCredentials(true);
         config.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
         config.setAllowedOriginPatterns(Arrays.asList("*"));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
