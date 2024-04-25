@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.andres.backend.usersapp.backendusersapp.models.dto.Movimientos_inventarioDto;
+import com.andres.backend.usersapp.backendusersapp.models.entities.Movimientos_inventario;
 
 public interface MovimientoService {
 
@@ -22,6 +23,6 @@ public interface MovimientoService {
 	Optional<Movimientos_inventarioDto> update(Movimientos_inventarioDto movimiento, Long id);
 	void remove(Long id);
 
-//	List<Object[]> findAllMovimientosDetallesAndNames(Long movimientoId);
+    List<Movimientos_inventario> findByActivoId(Long activoId);
 
 }

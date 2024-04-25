@@ -142,10 +142,13 @@ public class MovimientoServiceImp implements MovimientoService {
 		repository.deleteById(id);
 	}
 
+	@Override
+    @Transactional(readOnly = true)
+    public List<Movimientos_inventario> findByActivoId(Long activoId) {
+		return null;
+      
+    }
 
 
-//	public List<Object[]> findAllMovimientosDetallesAndNames(Long movimientoId) {
-//        return repository.findAllMovimientosDetallesAndNames(movimientoId);
-//    }
 
 }

@@ -32,8 +32,11 @@ public class Activo {
     @NotBlank
     private String no_serie;
 
+//    @NotBlank
+//    private String tipo;
+    
     @NotBlank
-    private String tipo;
+    private String clasificacion;
 
     @NotBlank
     private String factura;
@@ -107,12 +110,12 @@ public class Activo {
 	public void setNo_serie(String no_serie) {
 		this.no_serie = no_serie;
 	}
-	public String getTipo() {
-		return tipo;
-	}
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
+//	public String getTipo() {
+//		return tipo;
+//	}
+//	public void setTipo(String tipo) {
+//		this.tipo = tipo;
+//	}
 	public String getFactura() {
 		return factura;
 	}
@@ -194,6 +197,14 @@ public class Activo {
 	public void setProveedor(Proveedor proveedor) {
 		this.proveedor = proveedor;
 	}
+	public String getClasificacion() {
+		return clasificacion;
+	}
+	public void setClasificacion(String clasificacion) {
+		this.clasificacion = clasificacion;
+	}
+	
+	
 
 
 

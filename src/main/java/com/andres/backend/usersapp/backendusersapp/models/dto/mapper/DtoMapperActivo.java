@@ -29,7 +29,7 @@ public class DtoMapperActivo {
         		activo.getFabricante_id(),
         		activo.getModelo(),
         		activo.getNo_serie(),
-        		activo.getTipo(),
+        		activo.getClasificacion(),
         		activo.getGrupoactivo_id(),
         		activo.getProveedor().getProveedor_id(),
         		activo.getFactura(),

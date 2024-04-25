@@ -16,7 +16,7 @@ public class ActivoDto {
     private Long fabricante_id;
     private String modelo;
     private String no_serie;
-    private String tipo;
+    private String clasificacion;
     private Long grupoactivo_id;
     private Long proveedor_id;
     private String factura;
@@ -44,7 +44,7 @@ public class ActivoDto {
 		this.fabricante_id = fabricante_id;
 		this.modelo = modelo;
 		this.no_serie = no_serie;
-		this.tipo = tipo;
+		this.clasificacion = clasificacion;
 		this.grupoactivo_id = grupoactivo_id;
 		this.proveedor_id = proveedor_id;
 		this.factura = factura;
@@ -92,11 +92,14 @@ public class ActivoDto {
 	public void setNo_serie(String no_serie) {
 		this.no_serie = no_serie;
 	}
-	public String getTipo() {
-		return tipo;
+
+
+	public String getClasificacion() {
+		return clasificacion;
 	}
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
+
+	public void setClasificacion(String clasificacion) {
+		this.clasificacion = clasificacion;
 	}
 
 	public String getFactura() {

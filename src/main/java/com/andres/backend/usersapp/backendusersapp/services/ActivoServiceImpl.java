@@ -69,7 +69,7 @@ public class ActivoServiceImpl implements ActivoService {
 
         activoDb.setClave_busqueda(activo.getClave_busqueda());
 		activoDb.setDescripcion(activo.getDescripcion());
-		activoDb.setEstatus(activo.getEstatus());
+		activoDb.setEstatus("A");
 		activoDb.setFabricante_id(activo.getFabricante_id());
 		activoDb.setFactura(activo.getFactura());
 		activoDb.setFecha_compra(activo.getFecha_compra());
@@ -80,7 +80,7 @@ public class ActivoServiceImpl implements ActivoService {
 		activoDb.setNo_serie(activo.getModelo());
 		activoDb.setNombre(activo.getNombre());
 		activoDb.setProveedor(optionalProveedor.get());
-		activoDb.setTipo(activo.getTipo());
+		activoDb.setClasificacion(activo.getClasificacion());
 		activoDb.setImagen(null);
 
 		String directorioImagenes = "/Users/sergiomoreno/Documents/imagenes_activos/";
@@ -151,7 +151,7 @@ public class ActivoServiceImpl implements ActivoService {
 			activo.setNo_serie(activo.getModelo());
 			activo.setNombre(activo.getNombre());
 			activo.setProveedor(optionalProveedor.get());
-			activo.setTipo(activo.getTipo());
+			activo.setClasificacion(activo.getClasificacion());
 			activo.setImagen(imagenBytes);
 
 		} catch (java.io.IOException e) {
@@ -197,7 +197,7 @@ public class ActivoServiceImpl implements ActivoService {
 			activoDb.setModelo(activo.getModelo());
 			activoDb.setNo_serie(activo.getNo_serie());
 			activoDb.setProveedor(optionalProveedor.get());
-			activoDb.setTipo(activo.getTipo());
+			activoDb.setClasificacion(activo.getClasificacion());
 			//activoDb.setImagen(null);
 
 			activoOptional = repository.save(activoDb);

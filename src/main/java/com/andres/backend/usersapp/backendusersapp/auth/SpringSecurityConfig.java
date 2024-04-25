@@ -44,7 +44,7 @@ public class SpringSecurityConfig {
  SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests((authz) -> authz
-            .requestMatchers(HttpMethod.GET, "/imagenes/**","/users", "/users/page/{page}", "/activos", "/activos/page/{page}", "/users/**", "/activos/**")
+            .requestMatchers(HttpMethod.GET, "/imagenes/**","/users", "/users/page/{page}", "/activos", "/movimientos","/activos/page/{page}", "/users/**", "/activos/**")
             .permitAll()
        	    .requestMatchers(HttpMethod.POST, "/activos","/users").permitAll()
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
