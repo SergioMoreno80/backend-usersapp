@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.andres.backend.usersapp.backendusersapp.models.dto.Movimientos_inventarioDto;
 import com.andres.backend.usersapp.backendusersapp.models.entities.Departamentos;
 import com.andres.backend.usersapp.backendusersapp.models.entities.Empleado;
+import com.andres.backend.usersapp.backendusersapp.models.entities.Movimientos_inventario;
 import com.andres.backend.usersapp.backendusersapp.models.entities.Sucursales;
 import com.andres.backend.usersapp.backendusersapp.services.DepartamentosService;
 import com.andres.backend.usersapp.backendusersapp.services.EmpleadoService;
@@ -47,6 +48,10 @@ public class MovimientosController {
 	@Autowired
 	private DepartamentosService departamentosService;
 
+	@GetMapping("/activo/{activo_id}")
+    public List<Movimientos_inventario> obtenerMovimientosPorActivo(@PathVariable Long activo_id) {
+        return service.obtenerMovimientosPorActivo(activo_id);
+    }
 	
     @GetMapping
     public List<Movimientos_inventarioDto> list() {

@@ -36,7 +36,7 @@ public class ActivoDto {
 	public ActivoDto(Long activo_id, String nombre, String descripcion, Long fabricante_id, String modelo,
 			String no_serie, String tipo, Long grupoactivo_id, Long proveedor_id, String factura,
 			Date fecha_compra, BigDecimal importe, Date fecha_ingreso, String estatus, String clave_busqueda,
-			MultipartFile imagen, String foto, String nombreProveedor, String documento) {
+			MultipartFile imagen, String foto, MultipartFile doc, String nombreProveedor, String documento) {
 		super();
 		this.activo_id = activo_id;
 		this.nombre = nombre;
@@ -44,7 +44,7 @@ public class ActivoDto {
 		this.fabricante_id = fabricante_id;
 		this.modelo = modelo;
 		this.no_serie = no_serie;
-		this.clasificacion = clasificacion;
+		this.clasificacion = tipo;
 		this.grupoactivo_id = grupoactivo_id;
 		this.proveedor_id = proveedor_id;
 		this.factura = factura;
@@ -55,8 +55,8 @@ public class ActivoDto {
 		this.clave_busqueda = clave_busqueda;
 		this.imagen = imagen;
 		this.foto = foto;
+		this.doc = doc;
 		this.documento = documento;
-
 		this.Proveedor = nombreProveedor;
 	}
 

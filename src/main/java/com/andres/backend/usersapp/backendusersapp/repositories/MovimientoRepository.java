@@ -19,7 +19,7 @@ public interface MovimientoRepository extends CrudRepository<Movimientos_inventa
 	Page<Movimientos_inventario> obtenerMovimientos(Pageable pageable);
 
 	@Query(value = "select m from Movimientos_inventario m \n"
-			+ "JOIN Movimientos_detalle d ON m.id = d.movimiento_id", countQuery = "SELECT count(*) FROM Movimientos_inventario")
-	List<Movimientos_inventario> findByActivoId(@Param("activoId") Long activoId);
+			+ "JOIN Movimientos_detalle d ON m.id = d.movimiento.id", countQuery = "SELECT count(*) FROM Movimientos_inventario")
+	List<Movimientos_inventario> findByActivoId(@Param("activo_id") Long activo_id);
 
 }

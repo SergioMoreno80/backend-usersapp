@@ -4,12 +4,9 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.andres.backend.usersapp.backendusersapp.models.entities.Proveedor;
 
-public interface ProveedorRepository
-extends CrudRepository<Proveedor, Long> {
+public interface ProveedorRepository extends CrudRepository<Proveedor, Long> {
 
-    //Optional<Proveedor> findByName(String nombre);
-	//Page<Proveedor> findAll(Pageable pageable);
+	// Optional<Proveedor> findByName(String nombre);
+	// Page<Proveedor> findAll(Pageable pageable);
 
 }
-
-

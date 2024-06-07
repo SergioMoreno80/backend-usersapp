@@ -6,6 +6,7 @@ public class Movimientos_detalleDto {
 	private Long movimiento_id;
     private Long activo_id;
     private Long cantidad;
+    
 
 
 

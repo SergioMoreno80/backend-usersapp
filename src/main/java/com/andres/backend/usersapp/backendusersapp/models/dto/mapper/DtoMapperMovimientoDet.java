@@ -29,8 +29,8 @@ public class DtoMapperMovimientoDet {
 		// "ROLE_ADMIN".equals(r.getName()));
 		return new Movimientos_detalleDto
 				(detalle.getId(),
-						detalle.getMovimiento_id(),
-						detalle.getActivo_id(),
+						detalle.getMovimiento().getId(),
+						detalle.getActivo().getActivo_id(),
 						detalle.getCantidad());
 	}
 

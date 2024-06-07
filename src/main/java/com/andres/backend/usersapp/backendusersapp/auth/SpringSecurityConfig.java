@@ -44,9 +44,10 @@ public class SpringSecurityConfig {
  SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests((authz) -> authz
-            .requestMatchers(HttpMethod.GET, "/imagenes/**","/users", "/users/page/{page}", "/activos", "/movimientos","/activos/page/{page}", "/users/**", "/activos/**")
+            .requestMatchers(HttpMethod.GET, "/imagenes/**","/users", "/users/page/{page}", "/activos", "/movimientos","/activos/page/{page}", "/movimientos/activo/{activoId}", "/users/**", "/activos/**", "/movimientos/**", "/Assets/**")
             .permitAll()
        	    .requestMatchers(HttpMethod.POST, "/activos","/users").permitAll()
+       	 .requestMatchers(HttpMethod.PUT, "/activos","/users", "/activos/**", "/Assets", "/Assets/**").permitAll()
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/user/**").hasRole("USER")
                 .anyRequest().authenticated()
@@ -64,12 +65,12 @@ public class SpringSecurityConfig {
     CorsConfigurationSource corsConfigurationSource() {
 
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
+        config.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://6-users-app.s3-website.us-east-2.amazonaws.com"));
         config.setAllowedOriginPatterns(Arrays.asList("*"));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         config.setAllowCredentials(true);
-
+        
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;

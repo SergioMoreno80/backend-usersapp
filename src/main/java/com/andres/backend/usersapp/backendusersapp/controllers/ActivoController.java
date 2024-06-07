@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,11 +18,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.multipart.MultipartFile;
 import com.andres.backend.usersapp.backendusersapp.models.dto.ActivoDto;
 import com.andres.backend.usersapp.backendusersapp.models.entities.Fabricante;
 import com.andres.backend.usersapp.backendusersapp.models.entities.Grupoactivo;
@@ -32,7 +31,6 @@ import com.andres.backend.usersapp.backendusersapp.services.ActivoService;
 import com.andres.backend.usersapp.backendusersapp.services.FabricanteService;
 import com.andres.backend.usersapp.backendusersapp.services.GrupoactivoService;
 import com.andres.backend.usersapp.backendusersapp.services.ProveedorService;
-
 import jakarta.validation.Valid;
 
 @RestController
@@ -82,33 +80,27 @@ public class ActivoController {
 	}
 
    @PostMapping
-   //(consumes = {"multipart/form-data"})
    public ResponseEntity<?> create(
-		   @Valid @ModelAttribute ActivoDto activo,
-		   //@RequestPart("imagenR") MultipartFile imagen,
-		   BindingResult result) {
-       if(result.hasErrors()){
+           @Valid @ModelAttribute ActivoDto activo,
+           BindingResult result) {
+       if (result.hasErrors()) {
            return validation(result);
        }
-       return ResponseEntity.status(HttpStatus.CREATED).body(service.save(activo));
+       try {
+           return ResponseEntity.status(HttpStatus.CREATED).body(service.save(activo));
+       } catch (Exception e) {
+           String errorMessage = "Error al crear activo: " + e.getMessage();
+           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+       }
    }
 
-
-
    @PutMapping("/{id}")
-//   public ResponseEntity<?> update(Activo activo, Long id){
-//	   Optional<ActivoDto> o = service.findById(id);
-//	   if(o.isPresent()) {
-//		   Activo activoDB = o.orElseThrow();
-//		   activoDB.setClave_busqueda(activo.getClave_busqueda());
-//		   activoDB.setDescripcion(activo.getDescripcion());
-//		   activoDB.setEstatus(activo.getEstatus());
-//		   return ResponseEntity.status(HttpStatus.CREATED).body(service.save(activoDB));
-//
-//	   }
-//	   return ResponseEntity.notFound().build();
-
-   public ResponseEntity<?> update(@Valid @RequestBody ActivoDto activo, BindingResult result, @PathVariable Long id) {
+   public ResponseEntity<?> update(
+	        @PathVariable Long id,
+	        @Valid @ModelAttribute ActivoDto activo,
+	        BindingResult result,
+	        @RequestParam(value = "imagen", required = false) MultipartFile imagen,
+	        @RequestParam(value = "doc", required = false) MultipartFile doc) {
        if(result.hasErrors()){
            return validation(result);
        }
@@ -118,9 +110,9 @@ public class ActivoController {
            return ResponseEntity.status(HttpStatus.CREATED).body(o.orElseThrow());
        }
        return ResponseEntity.notFound().build();
-
    }
 
+   
    @DeleteMapping("/{id}")
    public ResponseEntity<?> remove(@PathVariable Long id){
 	   Optional<ActivoDto> o = service.findById(id);

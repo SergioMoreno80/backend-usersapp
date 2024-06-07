@@ -23,6 +23,8 @@ public interface MovimientoService {
 	Optional<Movimientos_inventarioDto> update(Movimientos_inventarioDto movimiento, Long id);
 	void remove(Long id);
 
-    List<Movimientos_inventario> findByActivoId(Long activoId);
+    List<Movimientos_inventario> findByActivoId(Long activo_id);
+    
+    List<Movimientos_inventario> obtenerMovimientosPorActivo(Long activo_id);
 
 }

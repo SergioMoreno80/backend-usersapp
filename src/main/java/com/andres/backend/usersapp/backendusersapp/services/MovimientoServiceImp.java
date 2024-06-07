@@ -17,10 +17,12 @@ import com.andres.backend.usersapp.backendusersapp.models.dto.Movimientos_invent
 import com.andres.backend.usersapp.backendusersapp.models.dto.mapper.DtoMapperMovimiento;
 import com.andres.backend.usersapp.backendusersapp.models.entities.Departamentos;
 import com.andres.backend.usersapp.backendusersapp.models.entities.Empleado;
+import com.andres.backend.usersapp.backendusersapp.models.entities.Movimientos_detalle;
 import com.andres.backend.usersapp.backendusersapp.models.entities.Movimientos_inventario;
 import com.andres.backend.usersapp.backendusersapp.models.entities.Sucursales;
 import com.andres.backend.usersapp.backendusersapp.repositories.DepartamentosRepository;
 import com.andres.backend.usersapp.backendusersapp.repositories.EmpleadoRepository;
+import com.andres.backend.usersapp.backendusersapp.repositories.MovimientoDetRepository;
 import com.andres.backend.usersapp.backendusersapp.repositories.MovimientoRepository;
 import com.andres.backend.usersapp.backendusersapp.repositories.SucursalesRepository;
 
@@ -36,6 +38,9 @@ public class MovimientoServiceImp implements MovimientoService {
 //
 	@Autowired
 	private EmpleadoRepository empleadoRepository;
+	
+	@Autowired
+	private MovimientoDetRepository movimientoDetRep;
 //	@Autowired
 //	private UserRepository userRepository;
 
@@ -144,11 +149,15 @@ public class MovimientoServiceImp implements MovimientoService {
 
 	@Override
     @Transactional(readOnly = true)
-    public List<Movimientos_inventario> findByActivoId(Long activoId) {
-		return null;
+    public List<Movimientos_inventario> findByActivoId(Long activo_id) {
+        return repository.findByActivoId(activo_id);
       
     }
-
+    
+    public List<Movimientos_inventario> obtenerMovimientosPorActivo(Long activo_id) {
+        List<Movimientos_detalle> detalles = movimientoDetRep.findByActivo(activo_id);
+        return detalles.stream().map(Movimientos_detalle::getMovimiento).collect(Collectors.toList());
+    }
 
 
 }

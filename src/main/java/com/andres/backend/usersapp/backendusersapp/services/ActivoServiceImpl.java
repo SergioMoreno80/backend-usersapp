@@ -6,22 +6,20 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.andres.backend.usersapp.backendusersapp.models.dto.ActivoDto;
 import com.andres.backend.usersapp.backendusersapp.models.dto.mapper.DtoMapperActivo;
 import com.andres.backend.usersapp.backendusersapp.models.entities.Activo;
-import com.andres.backend.usersapp.backendusersapp.models.entities.Empleado;
+import com.andres.backend.usersapp.backendusersapp.models.entities.Configuracion;
 import com.andres.backend.usersapp.backendusersapp.models.entities.Proveedor;
 import com.andres.backend.usersapp.backendusersapp.repositories.ActivoRepository;
+import com.andres.backend.usersapp.backendusersapp.repositories.ConfiguracionRepository;
 import com.andres.backend.usersapp.backendusersapp.repositories.ProveedorRepository;
-
 import io.jsonwebtoken.io.IOException;
 
 @Service
@@ -31,6 +29,11 @@ public class ActivoServiceImpl implements ActivoService {
 	private ActivoRepository repository;
 	@Autowired
 	private ProveedorRepository proveedorRepository;
+	
+	@Autowired
+	private ConfiguracionRepository configRepository;
+
+
 	@Override
 	@Transactional(readOnly = true)
 	public List<ActivoDto> findAll() {
@@ -48,9 +51,9 @@ public class ActivoServiceImpl implements ActivoService {
 
 	@Override
 	@Transactional(readOnly = true)
-    public Page<Object[]> findAllActivosWithFabricanteAndProveedor(Pageable pageable) {
-        return repository.findAllActivosWithFabricanteAndProveedor(pageable);
-    }
+	public Page<Object[]> findAllActivosWithFabricanteAndProveedor(Pageable pageable) {
+		return repository.findAllActivosWithFabricanteAndProveedor(pageable);
+	}
 
 	@Override
 	@Transactional(readOnly = true)
@@ -64,10 +67,33 @@ public class ActivoServiceImpl implements ActivoService {
 	@Override
 	@Transactional
 	public ActivoDto save(ActivoDto activo) {
-        Activo activoDb = new Activo();
+		Activo activoDb = new Activo();
+		Boolean local = false;
+		String directorioImagenes;
+		String directorioDocs;
 		Optional<Proveedor> optionalProveedor = proveedorRepository.findById(activo.getProveedor_id());
-
-        activoDb.setClave_busqueda(activo.getClave_busqueda());
+		Iterable<Configuracion> optionalConfig = configRepository.findAll();
+		if (optionalConfig != null) {
+		    Configuracion configuracion = optionalConfig.iterator().next();
+		   local = configuracion.isLocal();
+		    // Obtener la ruta de imágenes y documentos
+		     directorioImagenes = configuracion.getRuta_imagen();
+		     directorioDocs = configuracion.getRuta_docs();
+		}else {
+			directorioImagenes = "/Users/sergiomoreno/Documents/imagenes_activos/";
+			directorioDocs = "/Users/sergiomoreno/Documents/doc_activos/";
+		}
+//		//rutina simple para manejo de archivos e imagenes para su alamacenamiento local o en aws, u otro servicio.
+//		// Es necesario crear en base de datos las rutas configurables, crea una tabla de configuracion. Table: Configuracion
+//		
+//		if (local) {
+//			directorioImagenes = "/Users/sergiomoreno/Documents/imagenes_activos/";
+//			directorioDocs = "/Users/sergiomoreno/Documents/doc_activos/";
+//		} else {
+//			directorioImagenes = "/home/ec2-user/imagenes_activos/";
+//			directorioDocs = "/home/ec2-user/doc_activos/";
+//		}
+		activoDb.setClave_busqueda(activo.getClave_busqueda());
 		activoDb.setDescripcion(activo.getDescripcion());
 		activoDb.setEstatus("A");
 		activoDb.setFabricante_id(activo.getFabricante_id());
@@ -82,36 +108,30 @@ public class ActivoServiceImpl implements ActivoService {
 		activoDb.setProveedor(optionalProveedor.get());
 		activoDb.setClasificacion(activo.getClasificacion());
 		activoDb.setImagen(null);
-
-		String directorioImagenes = "/Users/sergiomoreno/Documents/imagenes_activos/";
-		String directorioDocs = "/Users/sergiomoreno/Documents/doc_activos/";
-
-
-        // Verifica si el directorio existe, si no, créalo
-        Path pathDirectorio = Paths.get(directorioImagenes);
-        if (!Files.exists(pathDirectorio)) {
-            try {
+		// Verifica si el directorio existe, si no, créalo
+		Path pathDirectorio = Paths.get(directorioImagenes);
+		if (!Files.exists(pathDirectorio)) {
+			try {
 				Files.createDirectories(pathDirectorio);
 			} catch (java.io.IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-        }
-        Path pathDirectorioDoc = Paths.get(directorioDocs);
-        if (!Files.exists(pathDirectorioDoc)) {
-            try {
+		}
+		Path pathDirectorioDoc = Paths.get(directorioDocs);
+		if (!Files.exists(pathDirectorioDoc)) {
+			try {
 				Files.createDirectories(pathDirectorioDoc);
 			} catch (java.io.IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-        }
+		}
+		// Guardar la imagen en el directorio de imágenes
+		Path rutaImagen = Paths.get(directorioImagenes + activo.getImagen().getOriginalFilename());
+		Path rutaDoc = Paths.get(directorioDocs + activo.getDoc().getOriginalFilename());
 
-        // Guardar la imagen en el directorio de imágenes
-        Path rutaImagen = Paths.get(directorioImagenes + activo.getImagen().getOriginalFilename());
-        Path rutaDoc = Paths.get(directorioDocs + activo.getDoc().getOriginalFilename());
-
-        try {
+		try {
 			Files.write(rutaImagen, activo.getImagen().getBytes());
 			Files.write(rutaDoc, activo.getDoc().getBytes());
 
@@ -119,9 +139,8 @@ public class ActivoServiceImpl implements ActivoService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        activoDb.setFoto(activo.getImagen().getOriginalFilename());
-        activoDb.setDocumento(activo.getDoc().getOriginalFilename());
-
+		activoDb.setFoto(activo.getImagen().getOriginalFilename());
+		activoDb.setDocumento(activo.getDoc().getOriginalFilename());
 
 		return DtoMapperActivo.builder().setActivo(repository.save(activoDb)).build();
 
@@ -134,7 +153,8 @@ public class ActivoServiceImpl implements ActivoService {
 		// Activo activo = new Activo();
 		try {
 
-			Optional<Proveedor> optionalProveedor = proveedorRepository.findById(activo.getProveedor().getProveedor_id());
+			Optional<Proveedor> optionalProveedor = proveedorRepository
+					.findById(activo.getProveedor().getProveedor_id());
 
 			byte[] imagenBytes = imagen.getBytes();
 
@@ -178,10 +198,27 @@ public class ActivoServiceImpl implements ActivoService {
 //		   }
 //		return Optional.ofNullable(activoOptional);
 
+	
 		Optional<Activo> o = repository.findById(id);
 		Activo activoOptional = null;
+		Boolean local = false;
+		String directorioImagenes;
+		String directorioDocs;
+		Optional<Proveedor> optionalProveedor = proveedorRepository.findById(activo.getProveedor_id());
+		Iterable<Configuracion> optionalConfig = configRepository.findAll();
+		Path rutaImagen = null;
+		Path rutaDoc = null;
+		if (optionalConfig != null) {
+		    Configuracion configuracion = optionalConfig.iterator().next();
+		   local = configuracion.isLocal();
+		    // Obtener la ruta de imágenes y documentos
+		     directorioImagenes = configuracion.getRuta_imagen();
+		     directorioDocs = configuracion.getRuta_docs();
+		}else {
+			directorioImagenes = "/Users/sergiomoreno/Documents/imagenes_activos/";
+			directorioDocs = "/Users/sergiomoreno/Documents/doc_activos/";
+		}
 		if (o.isPresent()) {
-			Optional<Proveedor> optionalProveedor = proveedorRepository.findById(activo.getProveedor_id());
 
 			Activo activoDb = o.orElseThrow();
 			activoDb.setNombre(activo.getNombre());
@@ -198,19 +235,76 @@ public class ActivoServiceImpl implements ActivoService {
 			activoDb.setNo_serie(activo.getNo_serie());
 			activoDb.setProveedor(optionalProveedor.get());
 			activoDb.setClasificacion(activo.getClasificacion());
-			//activoDb.setImagen(null);
 
+			// Verifica si el directorio existe, si no, créalo
+			Path pathDirectorio = Paths.get(directorioImagenes);
+			if (!Files.exists(pathDirectorio)) {
+				try {
+					Files.createDirectories(pathDirectorio);
+				} catch (java.io.IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			Path pathDirectorioDoc = Paths.get(directorioDocs);
+			if (!Files.exists(pathDirectorioDoc)) {
+				try {
+					Files.createDirectories(pathDirectorioDoc);
+				} catch (java.io.IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			if(activo.getDoc()!= null) {
+					//rutaDoc = Paths.get(directorioDocs + activo.getDoc().getOriginalFilename());
+				  String extensionDoc = obtenerExtension(activo.getDoc().getOriginalFilename());
+		          rutaDoc = Paths.get(directorioDocs + activo.getClave_busqueda() + extensionDoc);
+				try {
+					Files.write(rutaDoc, activo.getDoc().getBytes());
+					activoDb.setDocumento(activo.getClave_busqueda() + extensionDoc);
+				} catch (java.io.IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}else {
+				activoDb.setDocumento(activo.getDocumento());
+			}
+			
+			if(activo.getImagen()!= null) {
+//			    rutaImagen = Paths.get(directorioImagenes + activo.getImagen().getOriginalFilename());
+			    String extensionImagen = obtenerExtension(activo.getImagen().getOriginalFilename());
+	            rutaImagen = Paths.get(directorioImagenes + activo.getClave_busqueda() + extensionImagen);
+					try {
+						Files.write(rutaImagen, activo.getImagen().getBytes());
+						activoDb.setFoto(activo.getClave_busqueda() + extensionImagen);
+					} catch (java.io.IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			}else {
+				activoDb.setFoto(activo.getFoto());
+			}
+			
+			activoDb.setImagen(null);
+			activoDb.setDoc(null);
 			activoOptional = repository.save(activoDb);
 		}
 		return Optional.ofNullable(DtoMapperActivo.builder().setActivo(activoOptional).build());
 
 	}
+	
+    public static String obtenerExtension(String nombreArchivo) {
+        if (nombreArchivo == null || nombreArchivo.lastIndexOf('.') == -1) {
+            return null; // O devuelve una cadena vacía, según lo que prefieras
+        }
+        return nombreArchivo.substring(nombreArchivo.lastIndexOf('.'));
+    }
 
 	@Override
 	@Transactional
 	public void remove(Long id) {
 		repository.deleteById(id);
 	}
-
 
 }

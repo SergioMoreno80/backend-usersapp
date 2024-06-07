@@ -36,7 +36,7 @@ public class DtoMapperActivo {
         		activo.getFecha_compra(),activo.getImporte(),
         		activo.getFecha_ingreso(), activo.getEstatus(),
         		activo.getClave_busqueda(),
-        		null, activo.getFoto(), activo.getProveedor().getNombre()
+        		null, activo.getFoto(), null,  activo.getProveedor().getNombre()
         		,activo.getDocumento()
 
         		);
