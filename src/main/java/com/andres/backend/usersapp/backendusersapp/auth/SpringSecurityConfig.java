@@ -44,10 +44,10 @@ public class SpringSecurityConfig {
  SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests((authz) -> authz
-            .requestMatchers(HttpMethod.GET, "/imagenes/**","/users", "/users/page/{page}", "/activos", "/movimientos","/activos/page/{page}", "/movimientos/activo/{activoId}", "/users/**", "/activos/**", "/movimientos/**", "/Assets/**")
+            .requestMatchers(HttpMethod.GET, "/imagenes/**","/users", "/users/page/{page}", "/activos", "/proveedores","/fabricantes","/movimientos","/activos/page/{page}", "/movimientos/activo/{activoId}", "/users/**", "/activos/**", "/movimientos/**", "/Assets/**","/proveedores/**", "/fabricantes/**")
             .permitAll()
-       	    .requestMatchers(HttpMethod.POST, "/activos","/users").permitAll()
-       	 .requestMatchers(HttpMethod.PUT, "/activos","/users", "/activos/**", "/Assets", "/Assets/**").permitAll()
+       	    .requestMatchers(HttpMethod.POST, "/activos","/users", "/proveedores", "/fabricantes").permitAll()
+       	 .requestMatchers(HttpMethod.PUT, "/activos","/users", "/activos/**", "/Assets", "/Assets/**", "/proveedores","/proveedores/**", "/fabricantes", "/fabricantes/**").permitAll()
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/user/**").hasRole("USER")
                 .anyRequest().authenticated()

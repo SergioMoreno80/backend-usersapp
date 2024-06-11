@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import com.andres.backend.usersapp.backendusersapp.models.dto.ActivoDto;
+import com.andres.backend.usersapp.backendusersapp.models.dto.FabricanteDto;
+import com.andres.backend.usersapp.backendusersapp.models.dto.ProveedorDto;
 import com.andres.backend.usersapp.backendusersapp.models.entities.Fabricante;
 import com.andres.backend.usersapp.backendusersapp.models.entities.Grupoactivo;
 import com.andres.backend.usersapp.backendusersapp.models.entities.Proveedor;
@@ -135,13 +137,13 @@ public class ActivoController {
 
 	@RequestMapping("/cargaFabricante")
 	@ResponseBody
-	public List<Fabricante> ListaFabricante() {
+	public List<FabricanteDto> ListaFabricante() {
 		return fabricanteService.findAll();
 	}
 
 	@RequestMapping("/cargaProveedor")
 	@ResponseBody
-	public List<Proveedor> ListaProveedor() {
+	public List<ProveedorDto> ListaProveedor() {
 		return proveedorService.findAll();
 	}
 	@RequestMapping("/cargaGrupoActivo")

@@ -59,7 +59,8 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody User user, BindingResult result) {
+    public ResponseEntity<?> create(@Valid @RequestBody User user, 
+    		BindingResult result) {
         if(result.hasErrors()){
             return validation(result);
         }
