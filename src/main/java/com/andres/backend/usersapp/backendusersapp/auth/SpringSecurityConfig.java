@@ -46,7 +46,7 @@ public class SpringSecurityConfig {
             .authorizeHttpRequests((authz) -> authz
             .requestMatchers(HttpMethod.GET, "/imagenes/**","/users", "/users/page/{page}", "/activos", "/proveedores","/fabricantes","/movimientos","/activos/page/{page}", "/movimientos/activo/{activoId}", "/users/**", "/activos/**", "/movimientos/**", "/Assets/**","/proveedores/**", "/fabricantes/**")
             .permitAll()
-       	    .requestMatchers(HttpMethod.POST, "/activos","/users", "/proveedores", "/fabricantes").permitAll()
+       	    .requestMatchers(HttpMethod.POST, "/activos","/users", "/proveedores", "/fabricantes", "/movimientos").permitAll()
        	 .requestMatchers(HttpMethod.PUT, "/activos","/users", "/activos/**", "/Assets", "/Assets/**", "/proveedores","/proveedores/**", "/fabricantes", "/fabricantes/**").permitAll()
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/user/**").hasRole("USER")

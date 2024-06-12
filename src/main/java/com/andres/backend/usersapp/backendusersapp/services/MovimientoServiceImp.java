@@ -3,6 +3,7 @@ package com.andres.backend.usersapp.backendusersapp.services;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -15,11 +16,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.andres.backend.usersapp.backendusersapp.models.dto.Movimientos_inventarioDto;
 import com.andres.backend.usersapp.backendusersapp.models.dto.mapper.DtoMapperMovimiento;
+import com.andres.backend.usersapp.backendusersapp.models.entities.Activo;
 import com.andres.backend.usersapp.backendusersapp.models.entities.Departamentos;
 import com.andres.backend.usersapp.backendusersapp.models.entities.Empleado;
 import com.andres.backend.usersapp.backendusersapp.models.entities.Movimientos_detalle;
 import com.andres.backend.usersapp.backendusersapp.models.entities.Movimientos_inventario;
 import com.andres.backend.usersapp.backendusersapp.models.entities.Sucursales;
+import com.andres.backend.usersapp.backendusersapp.repositories.ActivoRepository;
 import com.andres.backend.usersapp.backendusersapp.repositories.DepartamentosRepository;
 import com.andres.backend.usersapp.backendusersapp.repositories.EmpleadoRepository;
 import com.andres.backend.usersapp.backendusersapp.repositories.MovimientoDetRepository;
@@ -41,6 +44,9 @@ public class MovimientoServiceImp implements MovimientoService {
 	
 	@Autowired
 	private MovimientoDetRepository movimientoDetRep;
+	
+	@Autowired
+	private ActivoRepository activoRepository;
 //	@Autowired
 //	private UserRepository userRepository;
 
@@ -155,8 +161,14 @@ public class MovimientoServiceImp implements MovimientoService {
     }
     
     public List<Movimientos_inventario> obtenerMovimientosPorActivo(Long activo_id) {
-        List<Movimientos_detalle> detalles = movimientoDetRep.findByActivo(activo_id);
-        return detalles.stream().map(Movimientos_detalle::getMovimiento).collect(Collectors.toList());
+//        List<Movimientos_detalle> detalles = movimientoDetRep.findByActivo(activo_id);
+//        return detalles.stream().map(Movimientos_detalle::getMovimiento).collect(Collectors.toList());
+    	Optional<Activo> optionalActivo = activoRepository.findById(activo_id);
+        if (optionalActivo.isPresent()) {
+            List<Movimientos_detalle> detalles = movimientoDetRep.findByActivo(optionalActivo.get());
+            return detalles.stream().map(Movimientos_detalle::getMovimiento).collect(Collectors.toList());
+        }
+        return Collections.emptyList();
     }
 
 
