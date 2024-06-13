@@ -26,19 +26,19 @@ public class DtoMapperActivo {
         //boolean isAdmin = user.getRoles().stream().anyMatch(r -> "ROLE_ADMIN".equals(r.getName()));
         return new ActivoDto(this.activo.getActivo_id(), activo.getNombre(),
                		activo.getDescripcion(),
-        		activo.getFabricante_id(),
+        		activo.getFabricante().getFabricante_id(),
         		activo.getModelo(),
         		activo.getNo_serie(),
         		activo.getClasificacion(),
-        		activo.getGrupoactivo_id(),
+        		activo.getGrupoactivo().getGrupoactivo_id(),
         		activo.getProveedor().getProveedor_id(),
         		activo.getFactura(),
         		activo.getFecha_compra(),activo.getImporte(),
         		activo.getFecha_ingreso(), activo.getEstatus(),
         		activo.getClave_busqueda(),
-        		null, activo.getFoto(), null,  activo.getProveedor().getNombre()
-        		,activo.getDocumento()
-
+        		null, activo.getFoto(), null,  activo.getProveedor().getNombre(), 
+        		activo.getFabricante().getNombre(), activo.getGrupoactivo().getNombre(),
+        		activo.getDocumento()
         		);
 
     }

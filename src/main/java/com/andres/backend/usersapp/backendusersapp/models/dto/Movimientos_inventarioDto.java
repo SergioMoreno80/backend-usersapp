@@ -16,7 +16,6 @@ public class Movimientos_inventarioDto {
 	   // private Long id_sucursal;
 //	    private Sucursales sucursales; // Cambiado de Long a Sucursales
 	    private String id_sucursal; // Nombre de la sucursal en lugar de la entidad completa
-
 //	    private Departamentos departamentos;
 //	    private Empleado empleado;
 //	    private User user;
@@ -31,7 +30,6 @@ public class Movimientos_inventarioDto {
 				String id_sucursal, String id_departamento,
 				String empleado_id, Long user_id,
 				//Long id_sucursal,
-				
 //				Departamentos departamentos, Empleado empleado, User user,
 //				MultipartFile doc,
 				String documento) {

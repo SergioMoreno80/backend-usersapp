@@ -30,13 +30,19 @@ public class ActivoDto {
     private MultipartFile doc; // Columna para almacenar la imagen en formato de bytes
     private String documento;
     private String Proveedor;
+    private String Fabricante;
+    private String Grupoactivo;
+
+
 
 
 
 	public ActivoDto(Long activo_id, String nombre, String descripcion, Long fabricante_id, String modelo,
 			String no_serie, String tipo, Long grupoactivo_id, Long proveedor_id, String factura,
 			Date fecha_compra, BigDecimal importe, Date fecha_ingreso, String estatus, String clave_busqueda,
-			MultipartFile imagen, String foto, MultipartFile doc, String nombreProveedor, String documento) {
+			MultipartFile imagen, String foto, MultipartFile doc, String nombreProveedor, 
+			String nombreFabricante, String nombreGrupoactivo, 
+			String documento) {
 		super();
 		this.activo_id = activo_id;
 		this.nombre = nombre;
@@ -58,6 +64,8 @@ public class ActivoDto {
 		this.doc = doc;
 		this.documento = documento;
 		this.Proveedor = nombreProveedor;
+		this.Fabricante = nombreFabricante;
+		this.Grupoactivo = nombreGrupoactivo;
 	}
 
 	public Long getActivo_id() {
@@ -204,6 +212,21 @@ public class ActivoDto {
 		Proveedor = proveedor;
 	}
 
+	public String getFabricante() {
+		return Fabricante;
+	}
+
+	public void setFabricante(String fabricante) {
+		Fabricante = fabricante;
+	}
+
+	public String getGrupoactivo() {
+		return Grupoactivo;
+	}
+
+	public void setGrupoactivo(String grupoactivo) {
+		Grupoactivo = grupoactivo;
+	}
 
 
 }

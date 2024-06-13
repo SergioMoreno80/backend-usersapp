@@ -3,7 +3,10 @@ package com.andres.backend.usersapp.backendusersapp.models.entities;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -63,22 +66,20 @@ public class Activo {
     private byte[] doc; // Columna para almacenar la imagen en formato de bytes
 
     private String documento;
-//	@JsonIgnore
-//    @ManyToOne(fetch= FetchType.LAZY)
-//    @JoinColumn(name = "proveedor_id")  // Nombre de la columna en la tabla de Activos que referencia a Proveedor
-//    private Long proveedor_id;
     
     @ManyToOne
     @JoinColumn(name = "proveedor_id")
     private Proveedor proveedor;
-//	@JsonIgnore
-//    @ManyToOne(fetch= FetchType.LAZY)
-//    @JoinColumn(name = "fabricante_id")  // Nombre de la columna en la tabla de Activos que referencia
-    private Long fabricante_id;
-//	@JsonIgnore
-//    @ManyToOne(fetch= FetchType.LAZY)
-//    @JoinColumn(name = "grupoactivo_id")  // Nombre de la columna en la tabla de Activos que referencia
-    private Long grupoactivo_id;
+    
+	@JsonIgnore
+    @ManyToOne(fetch= FetchType.LAZY)
+    @JoinColumn(name = "fabricante_id")  // Nombre de la columna en la tabla de Activos que referencia
+    private Fabricante fabricante;
+	
+	@JsonIgnore
+    @ManyToOne(fetch= FetchType.LAZY)
+    @JoinColumn(name = "grupoactivo_id")  // Nombre de la columna en la tabla de Activos que referencia
+    private Grupoactivo grupoactivo;
 
 	public Long getActivo_id() {
 		return activo_id;
@@ -159,18 +160,12 @@ public class Activo {
 		this.imagen = imagen;
 	}
 
-	public Long getFabricante_id() {
-		return fabricante_id;
-	}
-	public void setFabricante_id(Long fabricante_id) {
-		this.fabricante_id = fabricante_id;
-	}
-	public Long getGrupoactivo_id() {
-		return grupoactivo_id;
-	}
-	public void setGrupoactivo_id(Long grupoactivo_id) {
-		this.grupoactivo_id = grupoactivo_id;
-	}
+//	public Long getGrupoactivo_id() {
+//		return grupoactivo_id;
+//	}
+//	public void setGrupoactivo_id(Long grupoactivo_id) {
+//		this.grupoactivo_id = grupoactivo_id;
+//	}
 	public String getFoto() {
 		return foto;
 	}
@@ -203,10 +198,17 @@ public class Activo {
 	public void setClasificacion(String clasificacion) {
 		this.clasificacion = clasificacion;
 	}
-	
-	
-
-
-
+	public Fabricante getFabricante() {
+		return fabricante;
+	}
+	public void setFabricante(Fabricante fabricante) {
+		this.fabricante = fabricante;
+	}
+	public Grupoactivo getGrupoactivo() {
+		return grupoactivo;
+	}
+	public void setGrupoactivo(Grupoactivo grupoactivo) {
+		this.grupoactivo = grupoactivo;
+	}
 
 }

@@ -16,9 +16,13 @@ import com.andres.backend.usersapp.backendusersapp.models.dto.ActivoDto;
 import com.andres.backend.usersapp.backendusersapp.models.dto.mapper.DtoMapperActivo;
 import com.andres.backend.usersapp.backendusersapp.models.entities.Activo;
 import com.andres.backend.usersapp.backendusersapp.models.entities.Configuracion;
+import com.andres.backend.usersapp.backendusersapp.models.entities.Fabricante;
+import com.andres.backend.usersapp.backendusersapp.models.entities.Grupoactivo;
 import com.andres.backend.usersapp.backendusersapp.models.entities.Proveedor;
 import com.andres.backend.usersapp.backendusersapp.repositories.ActivoRepository;
 import com.andres.backend.usersapp.backendusersapp.repositories.ConfiguracionRepository;
+import com.andres.backend.usersapp.backendusersapp.repositories.FabricanteRepository;
+import com.andres.backend.usersapp.backendusersapp.repositories.GrupoactivoRepository;
 import com.andres.backend.usersapp.backendusersapp.repositories.ProveedorRepository;
 import io.jsonwebtoken.io.IOException;
 
@@ -29,6 +33,10 @@ public class ActivoServiceImpl implements ActivoService {
 	private ActivoRepository repository;
 	@Autowired
 	private ProveedorRepository proveedorRepository;
+	@Autowired
+	private FabricanteRepository fabricanteRepository;
+	@Autowired
+	private GrupoactivoRepository grupoactivoRepository;
 	
 	@Autowired
 	private ConfiguracionRepository configRepository;
@@ -72,6 +80,9 @@ public class ActivoServiceImpl implements ActivoService {
 		String directorioImagenes;
 		String directorioDocs;
 		Optional<Proveedor> optionalProveedor = proveedorRepository.findById(activo.getProveedor_id());
+		Optional<Fabricante> optionalFabricante = fabricanteRepository.findById(activo.getFabricante_id());
+		Optional<Grupoactivo> optionalGrupo = grupoactivoRepository.findById(activo.getGrupoactivo_id());
+
 		Iterable<Configuracion> optionalConfig = configRepository.findAll();
 		if (optionalConfig != null) {
 		    Configuracion configuracion = optionalConfig.iterator().next();
@@ -96,16 +107,17 @@ public class ActivoServiceImpl implements ActivoService {
 		activoDb.setClave_busqueda(activo.getClave_busqueda());
 		activoDb.setDescripcion(activo.getDescripcion());
 		activoDb.setEstatus("A");
-		activoDb.setFabricante_id(activo.getFabricante_id());
+		activoDb.setFabricante(optionalFabricante.get());
+		activoDb.setGrupoactivo(optionalGrupo.get());
+		activoDb.setProveedor(optionalProveedor.get());
+
 		activoDb.setFactura(activo.getFactura());
 		activoDb.setFecha_compra(activo.getFecha_compra());
 		activoDb.setFecha_ingreso(activo.getFecha_ingreso());
-		activoDb.setGrupoactivo_id(activo.getGrupoactivo_id());
 		activoDb.setImporte(activo.getImporte());
 		activoDb.setModelo(activo.getModelo());
 		activoDb.setNo_serie(activo.getModelo());
 		activoDb.setNombre(activo.getNombre());
-		activoDb.setProveedor(optionalProveedor.get());
 		activoDb.setClasificacion(activo.getClasificacion());
 		activoDb.setImagen(null);
 		// Verifica si el directorio existe, si no, créalo
@@ -155,22 +167,25 @@ public class ActivoServiceImpl implements ActivoService {
 
 			Optional<Proveedor> optionalProveedor = proveedorRepository
 					.findById(activo.getProveedor().getProveedor_id());
+			Optional<Fabricante> optionalFabricante = fabricanteRepository.findById(activo.getFabricante().getFabricante_id());
+			Optional<Grupoactivo> optionalGrupo = grupoactivoRepository.findById(activo.getGrupoactivo().getGrupoactivo_id());
+
 
 			byte[] imagenBytes = imagen.getBytes();
 
 			activo.setClave_busqueda(activo.getClave_busqueda());
 			activo.setDescripcion(activo.getDescripcion());
 			activo.setEstatus(activo.getEstatus());
-			activo.setFabricante_id(activo.getFabricante_id());
+			activo.setFabricante(optionalFabricante.get());
+			activo.setGrupoactivo(optionalGrupo.get());
+			activo.setProveedor(optionalProveedor.get());
 			activo.setFactura(activo.getFactura());
 			activo.setFecha_compra(activo.getFecha_compra());
 			activo.setFecha_ingreso(activo.getFecha_ingreso());
-			activo.setGrupoactivo_id(activo.getGrupoactivo_id());
 			activo.setImporte(activo.getImporte());
 			activo.setModelo(activo.getModelo());
 			activo.setNo_serie(activo.getModelo());
 			activo.setNombre(activo.getNombre());
-			activo.setProveedor(optionalProveedor.get());
 			activo.setClasificacion(activo.getClasificacion());
 			activo.setImagen(imagenBytes);
 
@@ -205,6 +220,8 @@ public class ActivoServiceImpl implements ActivoService {
 		String directorioImagenes;
 		String directorioDocs;
 		Optional<Proveedor> optionalProveedor = proveedorRepository.findById(activo.getProveedor_id());
+		Optional<Fabricante> optionalFabricante = fabricanteRepository.findById(activo.getFabricante_id());
+		Optional<Grupoactivo> optionalGrupo = grupoactivoRepository.findById(activo.getGrupoactivo_id());
 		Iterable<Configuracion> optionalConfig = configRepository.findAll();
 		Path rutaImagen = null;
 		Path rutaDoc = null;
@@ -225,15 +242,15 @@ public class ActivoServiceImpl implements ActivoService {
 			activoDb.setDescripcion(activo.getDescripcion());
 			activoDb.setClave_busqueda(activo.getClave_busqueda());
 			activoDb.setEstatus(activo.getEstatus());
-			activoDb.setFabricante_id(activo.getFabricante_id());
+			activoDb.setFabricante(optionalFabricante.get());
+			activoDb.setGrupoactivo(optionalGrupo.get());
+			activoDb.setProveedor(optionalProveedor.get());			
 			activoDb.setFactura(activo.getFactura());
 			activoDb.setFecha_compra(activo.getFecha_compra());
 			activoDb.setFecha_ingreso(activo.getFecha_ingreso());
-			activoDb.setGrupoactivo_id(activo.getGrupoactivo_id());
 			activoDb.setImporte(activo.getImporte());
 			activoDb.setModelo(activo.getModelo());
 			activoDb.setNo_serie(activo.getNo_serie());
-			activoDb.setProveedor(optionalProveedor.get());
 			activoDb.setClasificacion(activo.getClasificacion());
 
 			// Verifica si el directorio existe, si no, créalo
@@ -284,14 +301,12 @@ public class ActivoServiceImpl implements ActivoService {
 					}
 			}else {
 				activoDb.setFoto(activo.getFoto());
-			}
-			
+			}	
 			activoDb.setImagen(null);
 			activoDb.setDoc(null);
 			activoOptional = repository.save(activoDb);
 		}
 		return Optional.ofNullable(DtoMapperActivo.builder().setActivo(activoOptional).build());
-
 	}
 	
     public static String obtenerExtension(String nombreArchivo) {

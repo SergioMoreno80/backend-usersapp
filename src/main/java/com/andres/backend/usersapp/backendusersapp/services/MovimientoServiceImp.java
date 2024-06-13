@@ -157,12 +157,9 @@ public class MovimientoServiceImp implements MovimientoService {
     @Transactional(readOnly = true)
     public List<Movimientos_inventario> findByActivoId(Long activo_id) {
         return repository.findByActivoId(activo_id);
-      
     }
     
     public List<Movimientos_inventario> obtenerMovimientosPorActivo(Long activo_id) {
-//        List<Movimientos_detalle> detalles = movimientoDetRep.findByActivo(activo_id);
-//        return detalles.stream().map(Movimientos_detalle::getMovimiento).collect(Collectors.toList());
     	Optional<Activo> optionalActivo = activoRepository.findById(activo_id);
         if (optionalActivo.isPresent()) {
             List<Movimientos_detalle> detalles = movimientoDetRep.findByActivo(optionalActivo.get());
